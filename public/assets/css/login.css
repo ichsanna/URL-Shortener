@@ -1,0 +1,22 @@
+.login-form{
+    margin-top:50px;
+    background-color: white;
+    width: 800px;
+    height:500px;
+    padding:25px;
+    text-align: center;
+}
+.form-input{
+    margin-top:40px;
+}
+.form-floating{
+    margin-right: 100px;
+    margin-left:100px;
+}
+.button-submit{
+    margin-top:20px;
+    width:100px;
+}
+.login-form p{
+    margin-top:10px;
+}

@@ -1,0 +1,19 @@
+.navbar{
+    position: sticky !important;
+    top:0;
+    z-index: 10;
+}
+.navbar div{
+    color:white;
+    margin: 0 50px;
+    height: 50px;
+}
+.button-logout, .button-logout i{
+    font-size: 20px !important;
+}
+.button-logout i{
+    margin-right:5px;
+}
+.navbar h2{
+    margin:0;
+}

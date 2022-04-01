@@ -1,0 +1,23 @@
+.footer{
+    width: 100%;
+    color:white;
+    height: 50px;
+    position: fixed;
+    bottom: 0;
+}
+.created-by{
+    margin-left:15px;
+}
+.created-by i{
+    margin-left:5px;
+}
+.created-by p{
+    padding: 0 5px;
+    margin-bottom: 0px;
+}
+.created-by a:link{
+    color:white;
+}
+.created-by a:visited{
+    color:white;
+}

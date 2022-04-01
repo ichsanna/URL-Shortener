@@ -1,0 +1,13 @@
+body{
+    margin:0;
+    background-color: #ddf !important;
+}
+.main-container{
+    margin:50px 50px;
+}
+h1,h2,h3,h4,h5,h6{
+    font-family: 'Poppins', sans-serif;
+}
+p{
+    font-family: 'Open Sans', sans-serif;
+}

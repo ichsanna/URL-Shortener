@@ -1,0 +1,34 @@
+.button-create i{
+    margin-right:10px;
+}
+.search-bar span{
+    font-size: 20px;
+    padding:10px;
+}
+.create{
+    margin-right:20px;
+}
+.button-create{
+    width: 150px;
+}
+.toolbar h2{
+    margin-bottom: 0;
+}
+.toolbar{
+    margin-bottom: 20px;
+}
+.links-container{
+    border-radius: 10px;
+    background-color: white;
+    padding:20px;
+    margin-bottom: 10px;
+}
+.link p{
+    margin-bottom: 5px;
+}
+.operation button{
+    margin-right:10px;
+}
+.button-copy i{
+    margin-right:10px;
+}
