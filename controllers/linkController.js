@@ -1,4 +1,3 @@
-require('dotenv').config()
 const randomString = require('randomstring');
 const mongoose = require('mongoose')
 

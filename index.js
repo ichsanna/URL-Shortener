@@ -1,3 +1,4 @@
+require('dotenv').config()
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
@@ -9,8 +10,6 @@ const linkRoutes = require('./routes/linkRouter')
 const webRoutes = require('./routes/webRouter')
 const resFormat = require('./configs/responseFormat')
 const msg = require('./configs/responseMessages')
-
-require('dotenv').config()
 
 const app = express()
 
