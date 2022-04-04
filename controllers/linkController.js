@@ -21,8 +21,8 @@ const linkMethods = {
                 longLink: longLink,
                 shortLink: shortLink
             })
-            await newLink.save()
-            res.status(201).json(resFormat(true, msg.successCreateLink, ''))
+            let savedLink = await newLink.save()
+            res.status(201).json(resFormat(true, msg.successCreateLink, savedLink))
         }
         catch (err) {
             res.status(400).json(resFormat(false, null, err))
@@ -33,8 +33,8 @@ const linkMethods = {
             let linkId = req.body.linkId;
             let nameLink = req.body.nameLink
             let longLink = req.body.longLink
-            await Link.findOneAndUpdate({_id: linkId},{$set:{nameLink: nameLink,longLink: longLink}})
-            res.status(201).json(resFormat(true, msg.successEditLink, ''))
+            let editedLink = await Link.findOneAndUpdate({_id: linkId},{$set:{nameLink: nameLink,longLink: longLink}})
+            res.status(200).json(resFormat(true, msg.successEditLink, editedLink))
         }
         catch (err) {
             res.status(400).json(resFormat(false, null, err))
@@ -44,7 +44,7 @@ const linkMethods = {
         try{
             let linkId = req.body.linkId
             await Link.findByIdAndDelete(linkId)
-            res.status(201).json(resFormat(true, msg.successDeleteLink, ''))
+            res.status(200).json(resFormat(true, msg.successDeleteLink, ''))
         }
         catch(err){
             res.status(400).json(resFormat(false, null, err))
