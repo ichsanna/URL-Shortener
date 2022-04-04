@@ -51,7 +51,7 @@ const userMethods = {
                 }
             }
             else {
-                res.status(404).json(resFormat(false, msg.incorrectUsernamePassword, null))
+                res.status(401).json(resFormat(false, msg.incorrectUsernamePassword, null))
             }
         }
         catch (err) {
