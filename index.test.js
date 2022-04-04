@@ -15,6 +15,20 @@ afterAll(async ()=>{
     await User.collection.drop()
 })
 
+describe("Authorization testing", ()=>{
+    describe("Get all users", () => {
+        it('returns status 200', async () => {
+            const res = await request(app).get('/api/user/getuser')
+            expect(res.statusCode).toEqual(401)
+        })
+    })
+    describe("Get specific user by id", () => {
+        it('returns status 401', async () => {
+            const res = await request(app).get(`/api/user/getuser/${userId}`)
+            expect(res.statusCode).toEqual(401)
+        })
+    })
+})
 
 describe("User router testing", () => {
     describe("Register", () => {
@@ -58,25 +72,19 @@ describe("User router testing", () => {
         })
     })
     describe("Get users", () => {
-        describe("Get all unauthorized", () => {
-            it('returns status 200', async () => {
-                const res = await request(app).get('/api/user/getuser')
-                expect(res.statusCode).toEqual(401)
-            })
-        })
-        describe("Get all authorized", () => {
+        describe("Get all", () => {
             it('returns status 200', async () => {
                 const res = await request(app).get('/api/user/getuser').set('Authorization', `Bearer ${token}`)
                 expect(res.statusCode).toEqual(200)
             })
         })
-        describe("Get specific id unauthorized", () => {
+        describe("Get by id", () => {
             it('returns status 401', async () => {
-                const res = await request(app).get(`/api/user/getuser/${userId}`)
-                expect(res.statusCode).toEqual(401)
+                const res = await request(app).get(`/api/user/getuser/${userId}`).set('Authorization', `Bearer ${token}`)
+                expect(res.statusCode).toEqual(200)
             })
         })
-        describe("Get specific id authorized", () => {
+        describe("Get by nonexistent id", () => {
             it('returns status 401', async () => {
                 const res = await request(app).get(`/api/user/getuser/${userId}`).set('Authorization', `Bearer ${token}`)
                 expect(res.statusCode).toEqual(200)
