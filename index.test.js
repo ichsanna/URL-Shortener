@@ -57,4 +57,30 @@ describe("User router testing", () => {
             })
         })
     })
+    describe("Get users", () => {
+        describe("Get all unauthorized", () => {
+            it('returns status 200', async () => {
+                const res = await request(app).get('/api/user/getuser')
+                expect(res.statusCode).toEqual(401)
+            })
+        })
+        describe("Get all authorized", () => {
+            it('returns status 200', async () => {
+                const res = await request(app).get('/api/user/getuser').set('Authorization', `Bearer ${token}`)
+                expect(res.statusCode).toEqual(200)
+            })
+        })
+        describe("Get specific id unauthorized", () => {
+            it('returns status 401', async () => {
+                const res = await request(app).get(`/api/user/getuser/${userId}`)
+                expect(res.statusCode).toEqual(401)
+            })
+        })
+        describe("Get specific id authorized", () => {
+            it('returns status 401', async () => {
+                const res = await request(app).get(`/api/user/getuser/${userId}`).set('Authorization', `Bearer ${token}`)
+                expect(res.statusCode).toEqual(200)
+            })
+        })
+    })
 })
