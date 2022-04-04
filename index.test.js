@@ -1,5 +1,20 @@
 const app = require("./index");
 const request = require("supertest");
+const Link = require('./models/linkModel')
+const User = require('./models/userModel')
+
+beforeAll(async () => {
+    const resUser = await request(app).post('/api/user/register').send({ username: 'first', password: 'first' })
+    token = resUser.body.data.token
+    userId = resUser.body.data.id
+    const resLink = await request(app).post('/api/link/add').send({userId: userId,nameLink: 'Test Link',longLink: 'https://longlinkexample.com/resource/hello?name=myname&success=true'}).set('Authorization', `Bearer ${token}`)
+    linkId = resLink.body.data._id
+});
+afterAll(async ()=>{
+    await Link.collection.drop()
+    await User.collection.drop()
+})
+
 
 describe("User router testing", () => {
     describe("Register", () => {
@@ -12,26 +27,26 @@ describe("User router testing", () => {
         describe("Existing username & password", () => {
             it('returns status 401', async () => {
                 const res = await request(app).post('/api/user/register').send({ username: 'hello', password: 'hello' })
-                expect(res.statusCode).toEqual(401)
+                expect(res.statusCode).toEqual(409)
             })
         })
     })
     describe("Login", () => {
         describe("Correct username & password", () => {
             it('returns status 200', async () => {
-                const res = await request(app).post('/api/user/login').send({ username: 'ichsan', password: 'ichsan' })
+                const res = await request(app).post('/api/user/login').send({ username: 'hello', password: 'hello' })
                 expect(res.statusCode).toEqual(200)
             })
         })
         describe("Correct username, but not password", () => {
             it('returns status 401', async () => {
-                const res = await request(app).post('/api/user/login').send({ username: 'ichsan', password: 'asdf' })
+                const res = await request(app).post('/api/user/login').send({ username: 'hello', password: 'asdf' })
                 expect(res.statusCode).toEqual(401)
             })
         })
         describe("Correct password, but not username", () => {
             it('returns status 401', async () => {
-                const res = await request(app).post('/api/user/login').send({ username: 'asf', password: 'ichsan' })
+                const res = await request(app).post('/api/user/login').send({ username: 'asf', password: 'hello' })
                 expect(res.statusCode).toEqual(401)
             })
         })
@@ -42,5 +57,4 @@ describe("User router testing", () => {
             })
         })
     })
-    
 })
