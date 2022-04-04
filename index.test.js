@@ -28,6 +28,36 @@ describe("Authorization testing", ()=>{
             expect(res.statusCode).toEqual(401)
         })
     })
+    describe("Add new shortlink", () => {
+        it('returns status 401', async () => {
+            const res = await request(app).post('/api/link/add').send({userId: userId,nameLink: 'Example Link',longLink: 'https://linkexample.com/home'})
+            expect(res.statusCode).toEqual(401)
+        })
+    })
+    describe("Edit existing shortlink", () => {
+        it('returns status 401', async () => {
+            const res = await request(app).post('/api/link/edit').send({linkId: linkId,nameLink: 'Example Edited Link',longLink: 'https://linkexample.com/home/door'})
+            expect(res.statusCode).toEqual(401)
+        })
+    })
+    describe("Delete existing shortlink", () => {
+        it('returns status 401', async () => {
+            const res = await request(app).post('/api/link/delete').send({linkId: linkId})
+            expect(res.statusCode).toEqual(401)
+        })
+    })
+    describe("Get link data by link id", () => {
+        it('returns status 401', async () => {
+            const res = await request(app).get(`/api/link/get/link/${linkId}`)
+            expect(res.statusCode).toEqual(401)
+        })
+    })
+    describe("Get link data by user id", () => {
+        it('returns status 401', async () => {
+            const res = await request(app).get(`/api/link/get/user/${userId}`)
+            expect(res.statusCode).toEqual(401)
+        })
+    })
 })
 
 describe("User router testing", () => {
