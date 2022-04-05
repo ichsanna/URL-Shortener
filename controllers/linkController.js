@@ -9,8 +9,7 @@ const linkMethods = {
     addNewLink: async (req, res) => {
         try {
             let userId = mongoose.Types.ObjectId(req.body.userId);
-            let nameLink = req.body.nameLink
-            let longLink = req.body.longLink
+            let { nameLink, longLink } = req.body
             let shortLink = randomString.generate({
                 length: 8,
                 charset: 'alphanumeric'
@@ -22,7 +21,9 @@ const linkMethods = {
                 shortLink: shortLink
             })
             let savedLink = await newLink.save()
-            res.status(201).json(resFormat(true, msg.successCreateLink, savedLink))
+            resStatus = 201
+            resData = resFormat(true, msg.successCreateLink, savedLink)
+            res.status(resStatus).json(resData)
         }
         catch (err) {
             res.status(400).json(resFormat(false, null, err))
@@ -30,36 +31,44 @@ const linkMethods = {
     },
     editLink: async (req, res) => {
         try {
-            let linkId = req.body.linkId;
-            let nameLink = req.body.nameLink
-            let longLink = req.body.longLink
-            let editedLink = await Link.findOneAndUpdate({_id: linkId},{$set:{nameLink: nameLink,longLink: longLink}})
-            res.status(200).json(resFormat(true, msg.successEditLink, editedLink))
+            let { linkId, nameLink, longLink } = req.body.linkId;
+            let resStatus, resData
+            let editedLink = await Link.findOneAndUpdate({ _id: linkId }, { $set: { nameLink: nameLink, longLink: longLink } })
+            resStatus = 200
+            resData = resFormat(true, msg.successEditLink, editedLink)
+            res.status(resStatus).json(resData)
         }
         catch (err) {
             res.status(400).json(resFormat(false, null, err))
         }
     },
-    deleteLink: async (req,res) =>{
-        try{
+    deleteLink: async (req, res) => {
+        try {
             let linkId = req.body.linkId
+            let resStatus, resData
             await Link.findByIdAndDelete(linkId)
-            res.status(200).json(resFormat(true, msg.successDeleteLink, ''))
+            resStatus = 200
+            resData = resFormat(true, msg.successDeleteLink, '')
+            res.status(resStatus).json(resData)
         }
-        catch(err){
+        catch (err) {
             res.status(400).json(resFormat(false, null, err))
         }
     },
     getLinkById: async (req, res) => {
         try {
             let id = req.params.id
+            let resStatus, resData
             let data = await Link.findById(id)
             if (data) {
-                res.status(200).json(resFormat(true, msg.successGetLink, data))
+                resStatus = 200
+                resData = resFormat(true, msg.successGetLink, data)
             }
             else {
-                res.status(404).json(resFormat(false, msg.noLinkFoundById, data))
+                resStatus = 404
+                resData = resFormat(false, msg.noLinkFoundById, data)
             }
+            res.status(resStatus).json(resData)
         }
         catch (err) {
             res.status(400).json(resFormat(false, null, err))
@@ -68,13 +77,17 @@ const linkMethods = {
     getLinksByUser: async (req, res) => {
         try {
             let userId = req.params.id
+            let resStatus, resData
             let links = await Link.find({ owner: userId }).exec()
             if (links) {
-                res.status(200).json(resFormat(true, msg.successGetLinks, links))
+                resStatus = 200
+                resData = resFormat(true, msg.successGetLinks, links)
             }
             else {
-                res.status(404).json(resFormat(false, msg.noLinkFound, data))
+                resStatus = 404
+                resData = resFormat(false, msg.noLinkFound, data)
             }
+            res.status(resStatus).json(resData)
         }
         catch (err) {
             res.status(400).json(resFormat(false, null, err))
