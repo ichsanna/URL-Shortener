@@ -14,7 +14,12 @@ afterAll(async ()=>{
     await Link.collection.drop()
     await User.collection.drop()
 })
-
+describe("Nonexistent API route", ()=>{
+    it('returns status 404', async () => {
+        const res = await request(app).get('/api/notexist')
+        expect(res.statusCode).toEqual(404)
+    })
+})
 describe("Authorization testing", ()=>{
     describe("Get all users", () => {
         it('returns status 200', async () => {
