@@ -11,7 +11,7 @@ const userMethods = {
             let userId = req.params.id
             let resStatus, resData
             if (userId) {
-                let data = await User.findById(id).select('username created')
+                let data = await User.findById(userId).select('username created')
                 if (data) {
                     resStatus = 200
                     resData = resFormat(true, msg.successGetUser, data)
@@ -37,7 +37,7 @@ const userMethods = {
             let resStatus, resData
             if (users) {
                 resStatus = 200
-                resData = resFormat(true, msg.successGetUsers, data)
+                resData = resFormat(true, msg.successGetUsers, users)
             }
             else {
                 resStatus = 404
