@@ -114,15 +114,21 @@ describe("User router testing", () => {
             })
         })
         describe("Get by id", () => {
-            it('returns status 401', async () => {
+            it('returns status 200', async () => {
                 const res = await request(app).get(`/api/user/getuser/${userId}`).set('Authorization', `Bearer ${token}`)
                 expect(res.statusCode).toEqual(200)
             })
         })
         describe("Get by nonexistent id", () => {
-            it('returns status 401', async () => {
-                const res = await request(app).get(`/api/user/getuser/${userId}`).set('Authorization', `Bearer ${token}`)
-                expect(res.statusCode).toEqual(200)
+            it('returns status 404', async () => {
+                const res = await request(app).get(`/api/user/getuser/524bf6510f7c8eac95eb38f6`).set('Authorization', `Bearer ${token}`)
+                expect(res.statusCode).toEqual(404)
+            })
+        })
+        describe("Wrong id format", () => {
+            it('returns status 422', async () => {
+                const res = await request(app).get(`/api/user/getuser/abcde`).set('Authorization', `Bearer ${token}`)
+                expect(res.statusCode).toEqual(422)
             })
         })
     })
@@ -141,6 +147,12 @@ describe("Link router testing", ()=>{
                 expect(res.statusCode).toEqual(404)
             })
         })
+        describe("Wrong id format", ()=>{
+            it('returns status 422', async () => {
+                const res = await request(app).get(`/api/link/get/link/abcde`).set('Authorization', `Bearer ${token}`)
+                expect(res.statusCode).toEqual(422)
+            })
+        })
     })
     describe("Get link data by user id", () => {
         describe("Existing id", ()=>{
@@ -156,13 +168,13 @@ describe("Link router testing", ()=>{
             })
         })
         describe("No id provided", ()=>{
-            it('returns status 400', async () => {
+            it('returns status 422', async () => {
                 const res = await request(app).get(`/api/link/get/user`).set('Authorization', `Bearer ${token}`)
-                expect(res.statusCode).toEqual(400)
+                expect(res.statusCode).toEqual(422)
             })
         })
         describe("Wrong id format", ()=>{
-            it('returns status 400', async () => {
+            it('returns status 422', async () => {
                 const res = await request(app).get(`/api/link/get/user/abcde`).set('Authorization', `Bearer ${token}`)
                 expect(res.statusCode).toEqual(422)
             })
@@ -175,9 +187,21 @@ describe("Link router testing", ()=>{
                 expect(res.statusCode).toEqual(201)
             })
         })
+        describe("Nonexistent userId", ()=>{
+            it('returns status 404', async () => {
+                const res = await request(app).post('/api/link/add').send({userId: '524bf6510f7c8eac95eb38f6',nameLink: 'Example Link'}).set('Authorization', `Bearer ${token}`)
+                expect(res.statusCode).toEqual(404)
+            })
+        })
         describe("Missing form input", ()=>{
             it('returns status 422', async () => {
                 const res = await request(app).post('/api/link/add').send({userId: userId,nameLink: 'Example Link'}).set('Authorization', `Bearer ${token}`)
+                expect(res.statusCode).toEqual(422)
+            })
+        })
+        describe("Wrong userId format", ()=>{
+            it('returns status 422', async () => {
+                const res = await request(app).post('/api/link/add').send({userId: 'abcde',nameLink: 'Example Link'}).set('Authorization', `Bearer ${token}`)
                 expect(res.statusCode).toEqual(422)
             })
         })
@@ -190,8 +214,14 @@ describe("Link router testing", ()=>{
             })
         })
         describe("Nonexistent linkId", ()=>{
-            it('returns status 422', async () => {
+            it('returns status 404', async () => {
                 const res = await request(app).post('/api/link/edit').send({linkId: '524bf6510f7c8eac95eb38f6',nameLink: 'Example Edited Link',longLink: 'https://linkexample.com/home/door'}).set('Authorization', `Bearer ${token}`)
+                expect(res.statusCode).toEqual(404)
+            })
+        })
+        describe("Wrong linkId format", ()=>{
+            it('returns status 422', async () => {
+                const res = await request(app).post('/api/link/edit').send({linkId: 'abcde',nameLink: 'Example Edited Link',longLink: 'https://linkexample.com/home/door'}).set('Authorization', `Bearer ${token}`)
                 expect(res.statusCode).toEqual(422)
             })
         })
@@ -204,8 +234,14 @@ describe("Link router testing", ()=>{
             })
         })
         describe("Nonexistent linkId", ()=>{
-            it('returns status 422', async () => {
+            it('returns status 404', async () => {
                 const res = await request(app).post('/api/link/delete').send({linkId: '524bf6510f7c8eac95eb38f6'}).set('Authorization', `Bearer ${token}`)
+                expect(res.statusCode).toEqual(404)
+            })
+        })
+        describe("Wrong linkId format", ()=>{
+            it('returns status 422', async () => {
+                const res = await request(app).post('/api/link/delete').send({linkId: 'abcde'}).set('Authorization', `Bearer ${token}`)
                 expect(res.statusCode).toEqual(422)
             })
         })
