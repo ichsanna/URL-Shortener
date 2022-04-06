@@ -2,6 +2,7 @@ const randomString = require('randomstring');
 const mongoose = require('mongoose')
 
 const Link = require('../models/linkModel')
+const User = require('../models/userModel')
 const msg = require('../configs/responseMessages')
 const resFormat = require('../configs/responseFormat')
 
@@ -14,20 +15,27 @@ const linkMethods = {
                 length: 8,
                 charset: 'alphanumeric'
             })
-            if (nameLink && longLink) {
-                let newLink = new Link({
-                    owner: userId,
-                    nameLink: nameLink,
-                    longLink: longLink,
-                    shortLink: shortLink
-                })
-                let savedLink = await newLink.save()
-                resStatus = 201
-                resData = resFormat(true, msg.successCreateLink, savedLink)
-            }
-            else {
-                resStatus = 422
-                resData = resFormat(false, msg.failedCreateLink, null)
+            let user = await User.findById(userId)
+            if (user) {
+                if (nameLink && longLink) {
+                    let newLink = new Link({
+                        owner: userId,
+                        nameLink: nameLink,
+                        longLink: longLink,
+                        shortLink: shortLink
+                    })
+                    let savedLink = await newLink.save()
+                    resStatus = 201
+                    resData = resFormat(true, msg.successCreateLink, savedLink)
+
+                }
+                else {
+                    resStatus = 422
+                    resData = resFormat(false, msg.failedCreateLink, null)
+                }
+            } else {
+                resStatus = 404
+                resData = resFormat(false, msg.noUserFoundById, null)
             }
             res.status(resStatus).json(resData)
         }
