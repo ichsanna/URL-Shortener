@@ -4,14 +4,13 @@ const mongoose = require('mongoose')
 const path = require('path')
 const cookieParser = require('cookie-parser')
 
-if (path.basename(process.argv[1])==="jest.js") require('dotenv').config({path: `${__dirname}/.env.test`})
-else require('dotenv').config({path: `${__dirname}/.env.development`})
-
 const userRoutes = require('./routes/userRouter')
 const linkRoutes = require('./routes/linkRouter')
 const webRoutes = require('./routes/webRouter')
 const resFormat = require('./configs/responseFormat')
 const msg = require('./configs/responseMessages')
+
+require('dotenv').config()
 
 const app = express()
 
@@ -42,4 +41,3 @@ app.use((error, req, res, next) => {
 app.listen(process.env.PORT || 3000, () => {
     console.log('Server started on port 3000')
 });
-module.exports = app
