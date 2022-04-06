@@ -1,4 +1,4 @@
-function response (success,message,data){
+function responseFormat (success,message,data){
     return {
         success: success,
         message: message,
@@ -6,4 +6,4 @@ function response (success,message,data){
     }
 }
 
-module.exports = response
+module.exports = responseFormat
