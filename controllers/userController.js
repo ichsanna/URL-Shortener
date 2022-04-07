@@ -11,7 +11,7 @@ const userMethods = {
         try {
             let data = async () => {
                 let userId = req.params.userId
-                if (!validator.isMongoId(userId)) {
+                if (!userId || !validator.isMongoId(userId)) {
                     return { status: 422, data: resFormat(false, msg.failedGetUser, null) }
                 }
                 let users = await User.findById(userId).select('username created')

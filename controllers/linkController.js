@@ -12,8 +12,7 @@ const linkMethods = {
         try {
             let data = async () => {
                 let { userId, nameLink, longLink } = req.body
-                console.log(!validator.isMongoId(userId) , !nameLink , !validator.isURL(longLink))
-                if (!validator.isMongoId(userId) || !nameLink || !validator.isURL(longLink)) {
+                if (!userId || !nameLink || !longLink || !validator.isMongoId(userId)  || !validator.isURL(longLink)) {
                     return { status: 422, data: resFormat(false, msg.failedCreateLink, null) }
                 }
                 userId = mongoose.Types.ObjectId(userId);
@@ -45,7 +44,7 @@ const linkMethods = {
         try {
             let data = async () => {
                 let { linkId, nameLink, longLink } = req.body;
-                if (!validator.isMongoId(linkId) || !nameLink || !validator.isURL(longLink)) {
+                if (!linkId || !nameLink || !longLink || !validator.isMongoId(linkId) || !validator.isURL(longLink)) {
                     return { status: 422, data: resFormat(false, msg.failedEditLink, null) }
                 }
                 let editedLink = await Link.findOneAndUpdate({ _id: linkId }, { $set: { nameLink: nameLink, longLink: longLink } })
@@ -65,7 +64,7 @@ const linkMethods = {
         try {
             let data = async () => {
                 let linkId = req.body.linkId
-                if (!validator.isMongoId(linkId)) {
+                if (!linkId || !validator.isMongoId(linkId)) {
                     return { status: 422, data: resFormat(true, msg.failedDeleteLink, null) }
                 }
                 let deletedLink = await Link.findByIdAndDelete(linkId)
@@ -85,7 +84,7 @@ const linkMethods = {
         try {
             let data = async () => {
                 let linkId = req.params.linkId
-                if (!validator.isMongoId(linkId)) {
+                if (!linkId || !validator.isMongoId(linkId)) {
                     return { status: 422, data: resFormat(false, msg.failedGetLink, null) }
                 }
                 let links = await Link.findById(linkId)
@@ -106,7 +105,7 @@ const linkMethods = {
         try {
             let data = async () => {
                 let userId = req.params.userId
-                if (!validator.isMongoId(userId)) {
+                if (!userId || !validator.isMongoId(userId)) {
                     return { status: 422, data: resFormat(false, msg.failedGetLinks, null) }
                 }
                 let links = await Link.find({ owner: userId }).exec()
