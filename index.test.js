@@ -6,7 +6,7 @@ const User = require('./models/userModel')
 beforeAll(async () => {
     const resUser = await request(app).post('/api/user/register').send({ username: 'first', password: 'first' })
     token = resUser.body.data.token
-    userId = resUser.body.data.id
+    userId = resUser.body.data.userId
     const resLink = await request(app).post('/api/link/add').send({userId: userId,nameLink: 'Test Link',longLink: 'https://longlinkexample.com/resource/hello?name=myname&success=true'}).set('Authorization', `Bearer ${token}`)
     linkId = resLink.body.data._id
 });
