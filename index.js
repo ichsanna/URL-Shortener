@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const path = require('path')
 const cookieParser = require('cookie-parser')
+const morgan = require('morgan')
 
 if (path.basename(process.argv[1])==="jest.js") require('dotenv').config({path: `${__dirname}/.env.test`})
 else require('dotenv').config({path: `${__dirname}/.env.development`})
@@ -20,6 +21,7 @@ app.set('view engine','ejs')
 app.set('views', path.join(__dirname, 'public/views/pages'))
 app.use(express.static('public/assets'));
 
+app.use(morgan('tiny'))
 app.use(cookieParser())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
