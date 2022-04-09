@@ -1,30 +1,25 @@
-<div class="modal fade" id="edit-modal" tabindex="-1">
+<div class="modal fade" id="add-modal" tabindex="-1">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Edit Link</h4>
+                <h4 class="modal-title">Add New Shortlink</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div class="form-input form-floating mb-3">
-                    <input name="namelink" type="text" class="form-control" id="floatingEditName"
-                        placeholder="Link name">
-                    <label for="floatingEditName">Link name</label>
+                    <input name="namelink" type="text" class="form-control" id="add-name"
+                        placeholder="Enter link name">
+                    <label for="add-name">Link name</label>
                 </div>
                 <div class="form-input form-floating mb-3">
-                    <input name="longlink" type="text" class="form-control" id="floatingEditLink"
-                        placeholder="Original link">
-                    <label for="floatingEditLink">Original link</label>
-                </div>
-                <div class="form-input form-floating mb-3">
-                    <input name="shortlink" type="text" class="form-control" disabled
-                        id="floatingEditShortLink" placeholder="Short link">
-                    <label for="floatingEditShortLink">Short link</label>
+                    <input name="longlink" type="text" class="form-control" id="add-long"
+                        placeholder="Enter your link">
+                    <label for="add-long">Paste your link</label>
                 </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" onclick="EditLink()" class="submit-edit btn btn-primary">Edit</button>
+                <button type="button" onclick="addNewLink()" class="btn btn-primary">Add</button>
             </div>
         </div>
     </div>
