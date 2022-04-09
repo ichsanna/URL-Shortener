@@ -1,6 +1,6 @@
 const login = async () => {
-    let username = $('input[name=username]').val()
-    let password = $('input[name=password]').val()
+    let username = $('#username').val()
+    let password = $('#password').val()
     let body = {
         username: username,
         password: password
@@ -14,13 +14,13 @@ const login = async () => {
     }
     let responseData = await httpRequest('/api/user/login', sendData)
     Cookies.set("token", responseData.data.token)
-    Cookies.set("user_id", responseData.data.id)
+    Cookies.set("user_id", responseData.data.userId)
     window.location = "/"
 }
 const register = async () => {
-    let username = $('input[name=username]').val()
-    let password = $('input[name=password]').val()
-    let password2 = $('input[name=password2]').val()
+    let username = $('#username').val()
+    let password = $('#password').val()
+    let password2 = $('$password-repeat').val()
     if (passwordCheck(password, password2)) {
         let body = {
             'username': username,
@@ -35,12 +35,12 @@ const register = async () => {
         }
         let responseData = await httpRequest('/api/user/register', sendData)
         Cookies.set("token", responseData.data.token)
-        Cookies.set("user_id", responseData.data.id)
+        Cookies.set("user_id", responseData.data.userId)
         window.location = "/"
     }
     else {
-        $('input[name=password2]').addClass("is-invalid")
-        $('label[for=floatingPassword2]').html("The password doesnt match")
+        $('#password-repeat').addClass("is-invalid")
+        $('label[for=password-repeat]').html("The password doesnt match")
     }
 }
 const logout = () => {
@@ -76,14 +76,15 @@ const getLinks = async () => {
     });
 }
 const addNewLink = async () => {
-    let longLink = $('#floatingLink').val()
-    let nameLink = $('#floatingName').val()
+    let longLink = $('#add-long').val()
+    let nameLink = $('#add-name').val()
     let userId = Cookies.get("user_id")
     let body = {
         userId: userId,
         longLink: longLink,
         nameLink: nameLink
     }
+    console.log(body)
     let sendData = {
         'method': 'POST',
         'headers': {
@@ -93,9 +94,10 @@ const addNewLink = async () => {
         'body': JSON.stringify(body)
     }
     let responseData = await httpRequest('/api/link/add', sendData)
+    console.log(responseData)
     $("#add-modal").modal('hide')
-    $("#floatingName").val("")
-    $("#floatingLink").val("")
+    $("#add-name").val("")
+    $("#add-long").val("")
     $(".links-container").remove()
     getLinks()
 }
@@ -103,17 +105,17 @@ const copyLink = (link) => {
     navigator.clipboard.writeText(link);
 }
 const getEditLink = (linkId,count) => {
-    let nameLink = $(`.links-container:nth-child(${4+count})`).find(".link-title").text()
-    let longLink = $(`.links-container:nth-child(${4+count})`).find(".link-original").text()
-    let shortLink = $(`.links-container:nth-child(${4+count})`).find(".link-short").text()
-    $('#floatingEditName').val(nameLink)
-    $('#floatingEditLink').val(longLink)
-    $('#floatingEditShortLink').val(shortLink)
+    let nameLink = $(`.links-container:nth-child(${2+count})`).find(".link-title").text()
+    let longLink = $(`.links-container:nth-child(${2+count})`).find(".link-original").text()
+    let shortLink = $(`.links-container:nth-child(${2+count})`).find(".link-short").text()
+    $('#edit-name').val(nameLink)
+    $('#edit-long').val(longLink)
+    $('#edit-short').val(shortLink)
     $('.submit-edit').attr("onclick",`editLink("${linkId}")`)
 }
 const editLink = async (linkId) => {
-    let longLink = $('#floatingEditLink').val()
-    let nameLink = $('#floatingEditName').val()
+    let nameLink = $('#edit-name').val()
+    let longLink = $('#edit-long').val()
     let body = {
         linkId: linkId,
         longLink: longLink,
@@ -129,9 +131,9 @@ const editLink = async (linkId) => {
     }
     let responseData = await httpRequest('/api/link/edit', sendData)
     $("#edit-modal").modal('hide')
-    $("#floatingEditName").val("")
-    $("#floatingEditLink").val("")
-    $("#floatingEditShortLink").val("")
+    $('#edit-name').val("")
+    $('#edit-long').val("")
+    $('#edit-short').val("")
     $('.submit-edit').attr("onclick","")
     $(".links-container").remove()
     getLinks()
