@@ -16,7 +16,7 @@ const getLinks = async () => {
         $('.main-container').append(`<div class="container links-container d-flex justify-content-between">
         <div class="link">
             <h3 class="link-title">${link.nameLink}</h3>
-            <p class="link-short">localhost:3000/${link.shortLink}</p>
+            <a href="${link.shortLink}" target="_blank" class="link-short">localhost:3000/${link.shortLink}</a>
             <p class="link-original">${link.longLink}</p>
         </div>
         <div class="operation d-flex align-items-end">

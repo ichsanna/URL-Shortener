@@ -120,6 +120,26 @@ const linkMethods = {
         catch (err) {
             res.status(400).json(resFormat(false, null, err))
         }
+    },
+    redirectToLink: async (req, res) => {
+        try {
+            let data = async () => {
+                let shortLink = req.params.shortLink
+                if (!shortLink) {
+                    return '/'
+                }
+                let links = await Link.findOne({shortLink: shortLink}).select('longLink')
+                if (!links) {
+                    return '/'
+                }
+                return links.longLink
+            }
+            let resp = await data()
+            res.redirect(resp)
+        }
+        catch (err) {
+            res.status(400).json(resFormat(false, null, err))
+        }
     }
 }
 module.exports = linkMethods;

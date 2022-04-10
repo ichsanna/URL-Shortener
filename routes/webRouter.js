@@ -1,6 +1,7 @@
 const express = require('express')
-const auth = require('../middlewares/auth')
 const router = express.Router()
+const auth = require('../middlewares/auth')
+const linkController = require('../controllers/linkController')
 
 router.get('/', async (req, res) => {
     let token = req.cookies.token
@@ -27,5 +28,5 @@ router.get('/register', async (req, res) => {
     }
     else res.render("register")
 })
-
+router.get('/:shortLink', linkController.redirectToLink)
 module.exports = router;
