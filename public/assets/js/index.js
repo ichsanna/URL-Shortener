@@ -1,48 +1,3 @@
-const login = async () => {
-    let username = $('input[name=username]').val()
-    let password = $('input[name=password]').val()
-    let body = {
-        username: username,
-        password: password
-    }
-    let sendData = {
-        'method': 'POST',
-        'headers': {
-            'Content-Type': 'application/json'
-        },
-        'body': JSON.stringify(body)
-    }
-    let responseData = await httpRequest('/api/user/login', sendData)
-    Cookies.set("token", responseData.data.token)
-    Cookies.set("user_id", responseData.data.id)
-    window.location = "/"
-}
-const register = async () => {
-    let username = $('input[name=username]').val()
-    let password = $('input[name=password]').val()
-    let password2 = $('input[name=password2]').val()
-    if (passwordCheck(password, password2)) {
-        let body = {
-            'username': username,
-            'password': password
-        }
-        let sendData = {
-            'method': 'POST',
-            'headers': {
-                'Content-Type': 'application/json'
-            },
-            'body': JSON.stringify(body)
-        }
-        let responseData = await httpRequest('/api/user/register', sendData)
-        Cookies.set("token", responseData.data.token)
-        Cookies.set("user_id", responseData.data.id)
-        window.location = "/"
-    }
-    else {
-        $('input[name=password2]').addClass("is-invalid")
-        $('label[for=floatingPassword2]').html("The password doesnt match")
-    }
-}
 const logout = () => {
     Cookies.set("token", "")
     Cookies.set("user_id", "")
@@ -76,14 +31,15 @@ const getLinks = async () => {
     });
 }
 const addNewLink = async () => {
-    let longLink = $('#floatingLink').val()
-    let nameLink = $('#floatingName').val()
+    let longLink = $('#add-long').val()
+    let nameLink = $('#add-name').val()
     let userId = Cookies.get("user_id")
     let body = {
         userId: userId,
         longLink: longLink,
         nameLink: nameLink
     }
+    console.log(body)
     let sendData = {
         'method': 'POST',
         'headers': {
@@ -93,9 +49,10 @@ const addNewLink = async () => {
         'body': JSON.stringify(body)
     }
     let responseData = await httpRequest('/api/link/add', sendData)
+    console.log(responseData)
     $("#add-modal").modal('hide')
-    $("#floatingName").val("")
-    $("#floatingLink").val("")
+    $("#add-name").val("")
+    $("#add-long").val("")
     $(".links-container").remove()
     getLinks()
 }
@@ -103,17 +60,17 @@ const copyLink = (link) => {
     navigator.clipboard.writeText(link);
 }
 const getEditLink = (linkId,count) => {
-    let nameLink = $(`.links-container:nth-child(${4+count})`).find(".link-title").text()
-    let longLink = $(`.links-container:nth-child(${4+count})`).find(".link-original").text()
-    let shortLink = $(`.links-container:nth-child(${4+count})`).find(".link-short").text()
-    $('#floatingEditName').val(nameLink)
-    $('#floatingEditLink').val(longLink)
-    $('#floatingEditShortLink').val(shortLink)
+    let nameLink = $(`.links-container:nth-child(${2+count})`).find(".link-title").text()
+    let longLink = $(`.links-container:nth-child(${2+count})`).find(".link-original").text()
+    let shortLink = $(`.links-container:nth-child(${2+count})`).find(".link-short").text()
+    $('#edit-name').val(nameLink)
+    $('#edit-long').val(longLink)
+    $('#edit-short').val(shortLink)
     $('.submit-edit').attr("onclick",`editLink("${linkId}")`)
 }
 const editLink = async (linkId) => {
-    let longLink = $('#floatingEditLink').val()
-    let nameLink = $('#floatingEditName').val()
+    let nameLink = $('#edit-name').val()
+    let longLink = $('#edit-long').val()
     let body = {
         linkId: linkId,
         longLink: longLink,
@@ -129,9 +86,9 @@ const editLink = async (linkId) => {
     }
     let responseData = await httpRequest('/api/link/edit', sendData)
     $("#edit-modal").modal('hide')
-    $("#floatingEditName").val("")
-    $("#floatingEditLink").val("")
-    $("#floatingEditShortLink").val("")
+    $('#edit-name').val("")
+    $('#edit-long').val("")
+    $('#edit-short').val("")
     $('.submit-edit').attr("onclick","")
     $(".links-container").remove()
     getLinks()
@@ -152,22 +109,7 @@ const deleteLink = async (linkId) => {
     $(".links-container").remove()
     getLinks()
 }
-const httpRequest = async (url, data) => {
-    try {
-        let response = await fetch(url, data)
-        return response.json()
-    }
-    catch (err) {
-        console.log("Error")
-        console.log(err)
-    }
-}
-const passwordCheck = (password1, password2) => {
-    if (password1 === password2) {
-        return true
-    }
-    else return false;
-}
+
 $(document).ready(async () => {
     getLinks()
 })
