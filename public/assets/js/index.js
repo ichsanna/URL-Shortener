@@ -12,11 +12,13 @@ const renderLinks = async () =>{
     $('#edit-short').val("")
     $(".links-container").remove()
     links.forEach((link, count) => {
+        created_at = ((new Date(link.created_at)).toString()).substring(4,21)
         $('.main-container').append(`<div class="container links-container d-flex justify-content-between">
         <div class="link">
             <h3 class="link-title">${link.nameLink}</h3>
             <a href="${link.shortLink}" target="_blank" class="link-short">localhost:3000/${link.shortLink}</a>
             <p class="link-original">${link.longLink}</p>
+            <p class="created-at">Created at: ${created_at}</p>
         </div>
         <div class="operation d-flex flex-column align-items-center justify-content-between">
             <div class="d-flex justify-content-center">
