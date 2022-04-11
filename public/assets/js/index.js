@@ -1,17 +1,16 @@
+var links = []
 const logout = () => {
     Cookies.set("token", "")
     Cookies.set("user_id", "")
     location.reload()
 }
-const getLinks = async () => {
-    let sendData = {
-        'method': 'GET',
-        'headers': {
-            'Authorization': 'Bearer ' + Cookies.get("token")
-        },
-    }
-    let responseData = await httpRequest('/api/link/get/user/' + Cookies.get("user_id"), sendData)
-    let links = responseData.data
+const renderLinks = async () =>{
+    $("#add-name").val("")
+    $("#add-long").val("")
+    $('#edit-name').val("")
+    $('#edit-long').val("")
+    $('#edit-short').val("")
+    $(".links-container").remove()
     links.forEach((link, count) => {
         $('.main-container').append(`<div class="container links-container d-flex justify-content-between">
         <div class="link">
@@ -35,7 +34,19 @@ const getLinks = async () => {
             </div>
         </div>
     </div>`)
-    });
+    })
+}
+const getLinks = async () => {
+    let sendData = {
+        'method': 'GET',
+        'headers': {
+            'Authorization': 'Bearer ' + Cookies.get("token")
+        },
+    }
+    let responseData = await httpRequest('/api/link/get/user/' + Cookies.get("user_id"), sendData)
+    console.log(responseData)
+    links = responseData.data
+    renderLinks()
 }
 const addNewLink = async () => {
     let longLink = $('#add-long').val()
@@ -46,7 +57,6 @@ const addNewLink = async () => {
         longLink: longLink,
         nameLink: nameLink
     }
-    console.log(body)
     let sendData = {
         'method': 'POST',
         'headers': {
@@ -56,12 +66,9 @@ const addNewLink = async () => {
         'body': JSON.stringify(body)
     }
     let responseData = await httpRequest('/api/link/add', sendData)
-    console.log(responseData)
+    links.push(responseData.data)
     $("#add-modal").modal('hide')
-    $("#add-name").val("")
-    $("#add-long").val("")
-    $(".links-container").remove()
-    getLinks()
+    renderLinks()
 }
 const openQR = (shortLink,count) => {
     let nameLink = $(`.links-container:nth-child(${2 + count})`).find(".link-title").text()
@@ -97,13 +104,12 @@ const editLink = async (linkId) => {
         'body': JSON.stringify(body)
     }
     let responseData = await httpRequest('/api/link/edit', sendData)
+    let index = links.findIndex(arr => arr._id === linkId)
+    links[index].longLink = longLink
+    links[index].nameLink = nameLink
     $("#edit-modal").modal('hide')
-    $('#edit-name').val("")
-    $('#edit-long').val("")
-    $('#edit-short').val("")
     $('.submit-edit').attr("onclick", "")
-    $(".links-container").remove()
-    getLinks()
+    renderLinks()
 }
 const deleteLink = async (linkId) => {
     let body = {
@@ -118,8 +124,9 @@ const deleteLink = async (linkId) => {
         'body': JSON.stringify(body)
     }
     let responseData = await httpRequest('/api/link/delete', sendData)
-    $(".links-container").remove()
-    getLinks()
+    let index = links.findIndex(arr => arr._id === linkId)
+    links.splice(index,1)
+    renderLinks()
 }
 
 $(document).ready(async () => {
