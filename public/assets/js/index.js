@@ -20,11 +20,11 @@ const renderLinks = async () =>{
             <p class="link-original">${link.longLink}</p>
             <p class="created-at">Created at: ${created_at}</p>
         </div>
-        <div class="operation d-flex flex-column align-items-center justify-content-between">
+        <div class="operation d-flex flex-column align-items-center justify-content-around">
             <div class="d-flex justify-content-center">
-            <button type="button" onclick="openQR('${link.shortLink}',${count})"class="button-qr btn btn-primary" 
-            data-bs-toggle="modal" data-bs-target="#qr-modal">
-                   <i class="fa-solid fa-qrcode"></i>QR Code</button>
+                <button type="button" onclick="openQR('${link.shortLink}',${count})"class="button-qr btn btn-primary" 
+                data-bs-toggle="modal" data-bs-target="#qr-modal">
+                    <i class="fa-solid fa-qrcode"></i>QR Code</button>
             </div>
             <div class="d-flex">
             <button type="button" onclick="copyLink('localhost:3000/${link.shortLink}')"class="button-copy btn btn-primary">
