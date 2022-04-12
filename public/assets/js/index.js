@@ -4,34 +4,34 @@ const logout = () => {
     Cookies.set("user_id", "")
     location.reload()
 }
-const renderLinks = async () =>{
+const renderLinks = async (items) =>{
     $("#add-name").val("")
     $("#add-long").val("")
     $('#edit-name').val("")
     $('#edit-long').val("")
     $('#edit-short').val("")
     $(".links-container").remove()
-    links.forEach((link, count) => {
-        created_at = ((new Date(link.created_at)).toString()).substring(4,21)
+    items.forEach((item, count) => {
+        created_at = ((new Date(item.created_at)).toString()).substring(4,21)
         $('.main-container').append(`<div class="container links-container d-flex justify-content-between">
         <div class="link">
-            <h3 class="link-title">${link.nameLink}</h3>
-            <a href="${link.shortLink}" target="_blank" class="link-short">localhost:3000/${link.shortLink}</a>
-            <p class="link-original">${link.longLink}</p>
+            <h3 class="link-title">${item.nameLink}</h3>
+            <a href="${item.shortLink}" target="_blank" class="link-short">localhost:3000/${item.shortLink}</a>
+            <p class="link-original">${item.longLink}</p>
             <p class="created-at">Created at: ${created_at}</p>
         </div>
         <div class="operation d-flex flex-column align-items-center justify-content-around">
             <div class="d-flex justify-content-center">
-                <button type="button" onclick="openQR('${link.shortLink}',${count})"class="button-qr btn btn-primary" 
+                <button type="button" onclick="openQR('${item.shortLink}',${count})"class="button-qr btn btn-primary" 
                 data-bs-toggle="modal" data-bs-target="#qr-modal">
                     <i class="fa-solid fa-qrcode"></i>QR Code</button>
             </div>
             <div class="d-flex">
-            <button type="button" onclick="copyLink('localhost:3000/${link.shortLink}')"class="button-copy btn btn-primary">
+            <button type="button" onclick="copyLink('localhost:3000/${item.shortLink}')"class="button-copy btn btn-primary">
                    <i class="fa-solid fa-copy"></i>Copy</button>
-            <button type="button" onclick="getEditLink('${link._id}',${count})" class="button-edit btn btn-primary" data-bs-toggle="modal"
+            <button type="button" onclick="getEditLink('${item._id}',${count})" class="button-edit btn btn-primary" data-bs-toggle="modal"
                     data-bs-target="#edit-modal"><i class="fa-solid fa-pen-to-square"></i>Edit</button>
-            <button type="button" onclick="deleteLink('${link._id}')" class="button-delete btn btn-primary">
+            <button type="button" onclick="deleteLink('${item._id}')" class="button-delete btn btn-primary">
                     <i class="fa-solid fa-x"></i>Delete</button>
             </div>
         </div>
@@ -48,7 +48,7 @@ const getLinks = async () => {
     let responseData = await httpRequest('/api/link/get/user/' + Cookies.get("user_id"), sendData)
     console.log(responseData)
     links = responseData.data
-    renderLinks()
+    renderLinks(links)
 }
 const addNewLink = async () => {
     let longLink = $('#add-long').val()
@@ -70,7 +70,7 @@ const addNewLink = async () => {
     let responseData = await httpRequest('/api/link/add', sendData)
     links.push(responseData.data)
     $("#add-modal").modal('hide')
-    renderLinks()
+    renderLinks(links)
 }
 const openQR = (shortLink,count) => {
     let nameLink = $(`.links-container:nth-child(${2 + count})`).find(".link-title").text()
@@ -111,7 +111,7 @@ const editLink = async (linkId) => {
     links[index].nameLink = nameLink
     $("#edit-modal").modal('hide')
     $('.submit-edit').attr("onclick", "")
-    renderLinks()
+    renderLinks(links)
 }
 const deleteLink = async (linkId) => {
     let body = {
@@ -128,9 +128,18 @@ const deleteLink = async (linkId) => {
     let responseData = await httpRequest('/api/link/delete', sendData)
     let index = links.findIndex(arr => arr._id === linkId)
     links.splice(index,1)
-    renderLinks()
+    renderLinks(links)
+}
+const searchLink = () => {			
+    console.log($('.search-input').val())
+    tmpLinks = links
+    tmpLinks = tmpLinks.filter(arr => arr.nameLink.toLowerCase().includes($('.search-input').val()))
+    renderLinks(tmpLinks)
 }
 
-$(document).ready(async () => {
+$(document).ready(() => {
     getLinks()
+    $('.search-input').on({
+        keyup:  $.debounce(500, searchLink)
+    });
 })
