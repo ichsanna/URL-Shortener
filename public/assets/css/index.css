@@ -17,6 +17,13 @@
 .toolbar{
     margin-bottom: 20px;
 }
+.toolbar-child p{
+    margin-right: 10px;
+    margin-bottom: 0px;
+}
+.toolbar-child select{
+    margin-right: 10px;
+}
 .links-container{
     border-radius: 10px;
     background-color: white;

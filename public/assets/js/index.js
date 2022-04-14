@@ -4,15 +4,16 @@ const logout = () => {
     Cookies.set("user_id", "")
     location.reload()
 }
-const renderLinks = async (items) =>{
+const renderLinks = async (items, sortby = 'name', order = 'asc') => {
     $("#add-name").val("")
     $("#add-long").val("")
     $('#edit-name').val("")
     $('#edit-long').val("")
     $('#edit-short').val("")
     $(".links-container").remove()
+    items = sortLinks(items, sortby, order)
     items.forEach((item, count) => {
-        created_at = ((new Date(item.created_at)).toString()).substring(4,21)
+        created_at = ((new Date(item.created_at)).toString()).substring(4, 21)
         $('.main-container').append(`<div class="container links-container d-flex justify-content-between">
         <div class="link">
             <h3 class="link-title">${item.nameLink}</h3>
@@ -46,9 +47,8 @@ const getLinks = async () => {
         },
     }
     let responseData = await httpRequest('/api/link/get/user/' + Cookies.get("user_id"), sendData)
-    console.log(responseData)
     links = responseData.data
-    renderLinks(links)
+    renderLinks(links, 'sad')
 }
 const addNewLink = async () => {
     let longLink = $('#add-long').val()
@@ -72,10 +72,10 @@ const addNewLink = async () => {
     $("#add-modal").modal('hide')
     renderLinks(links)
 }
-const openQR = (shortLink,count) => {
+const openQR = (shortLink, count) => {
     let nameLink = $(`.links-container:nth-child(${2 + count})`).find(".link-title").text()
     $('#qr-name').text(nameLink)
-    $('#qr-image').attr('src',`/api/link/get/qr/${shortLink}`)
+    $('#qr-image').attr('src', `/api/link/get/qr/${shortLink}`)
 }
 const copyLink = (link) => {
     navigator.clipboard.writeText(link);
@@ -127,19 +127,62 @@ const deleteLink = async (linkId) => {
     }
     let responseData = await httpRequest('/api/link/delete', sendData)
     let index = links.findIndex(arr => arr._id === linkId)
-    links.splice(index,1)
+    links.splice(index, 1)
     renderLinks(links)
 }
-const searchLink = () => {			
-    console.log($('.search-input').val())
+const searchLink = () => {
     tmpLinks = links
     tmpLinks = tmpLinks.filter(arr => arr.nameLink.toLowerCase().includes($('.search-input').val()))
     renderLinks(tmpLinks)
 }
-
+const sortLinks = (items, sortby, order) => {
+    if (sortby === 'name') {
+        items.sort((a, b) => {
+            if (a.nameLink.toLowerCase() > b.nameLink.toLowerCase()) {
+                return 1
+            }
+            return -1
+        })
+    }
+    else if (sortby === 'short') {
+        items.sort((a, b) => {
+            if (a.shortLink.toLowerCase() > b.shortLink.toLowerCase()) {
+                return 1
+            }
+            return -1
+        })
+    }
+    else if (sortby === 'date') {
+        items.sort((a, b) => {
+            if (a.created_at.toLowerCase() > b.created_at.toLowerCase()) {
+                return 1
+            }
+            return -1
+        })
+    }
+    else if (sortby === 'long') {
+        items.sort((a, b) => {
+            if (a.longLink.toLowerCase() > b.longLink.toLowerCase()) {
+                return 1
+            }
+            return -1
+        })
+    }
+    if (order == 'desc') {
+        items.reverse()
+    }
+    console.log(items)
+    return items
+}
 $(document).ready(() => {
     getLinks()
     $('.search-input').on({
-        keyup:  $.debounce(500, searchLink)
+        keyup: $.debounce(500, searchLink)
+    });
+    $('.sort-by').on('change', function () {
+        renderLinks(links,$('.sort-by').val(),$('.sort-order').val())
+    });
+    $('.sort-order').on('change', function () {
+        renderLinks(links,$('.sort-by').val(),$('.sort-order').val())
     });
 })
