@@ -1,6 +1,8 @@
 const randomString = require('randomstring');
 const mongoose = require('mongoose')
 const validator = require('validator').default
+const qr = require('qrcode')
+const stream = require('stream')
 
 const Link = require('../models/linkModel')
 const User = require('../models/userModel')
@@ -12,7 +14,7 @@ const linkMethods = {
         try {
             let data = async () => {
                 let { userId, nameLink, longLink } = req.body
-                if (!userId || !nameLink || !longLink || !validator.isMongoId(userId)  || !validator.isURL(longLink)) {
+                if (!userId || !nameLink || !longLink || !validator.isMongoId(userId) || !validator.isURL(longLink)) {
                     return { status: 422, data: resFormat(false, msg.failedCreateLink, null) }
                 }
                 userId = mongoose.Types.ObjectId(userId);
@@ -116,6 +118,42 @@ const linkMethods = {
             }
             let resp = await data()
             res.status(resp.status).json(resp.data)
+        }
+        catch (err) {
+            res.status(400).json(resFormat(false, null, err))
+        }
+    },
+    redirectToLink: async (req, res) => {
+        try {
+            let data = async () => {
+                let shortLink = req.params.shortLink
+                if (!shortLink) {
+                    return '/'
+                }
+                let links = await Link.findOne({ shortLink: shortLink }).select('longLink')
+                if (!links) {
+                    return '/'
+                }
+                return links.longLink
+            }
+            let resp = await data()
+            res.redirect(resp)
+        }
+        catch (err) {
+            res.status(400).json(resFormat(false, null, err))
+        }
+    },
+    getLinkQRCode: async (req, res) => {
+        try {
+            const qrStream = new stream.PassThrough();
+            await qr.toFileStream(qrStream, req.params.shortLink,
+                {
+                    margin: 1,
+                    type: 'png',
+                    width: 720,
+                    errorCorrectionLevel: 'H'
+                });
+            qrStream.pipe(res);
         }
         catch (err) {
             res.status(400).json(resFormat(false, null, err))
