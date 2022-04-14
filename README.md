@@ -1,7 +1,7 @@
 # URL Shortener
 ## Prerequisites
 - Install [NodeJS and npm](https://nodejs.org/en/download/)
-- Create .env file consisting of variables:
+- Create .env.development (dev) & .env.test (testing) file consisting of variables:
 ```
  MONGO_URI=<Your MongoDB connection string>
  PORT=<Port that will be used by this project, optional>
@@ -17,3 +17,7 @@ Run the project
  npm start
 ```
 Open [http://localhost:3000](http://localhost:3000) or your own configured port in .env
+## Testing
+```bash
+ npm test
+```

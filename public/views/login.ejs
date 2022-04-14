@@ -2,28 +2,29 @@
 <html lang="en">
 
 <head>
-    <%- include('../head.ejs') %>
+    <%- include('partials/head.ejs') %>
         <link rel="stylesheet" href="/css/login.css">
 </head>
 
 <body>
-    <%- include('../navbar.ejs') %>
+    <%- include('partials/navbar.ejs') %>
         <div class="container main-container d-flex flex-column justify-content-center align-items-center">
             <div class="login-form">
                 <h1>Login</h1>
                 <div class="form-input form-floating mb-3">
-                    <input name="username" type="text" class="form-control" id="floatingInput" placeholder="Username">
-                    <label for="floatingInput">Username</label>
+                    <input name="username" type="text" class="form-control" id="username" placeholder="Username">
+                    <label for="username">Username</label>
                 </div>
                 <div class="form-floating">
-                    <input name="password" type="password" class="form-control" id="floatingPassword" placeholder="Password">
-                    <label for="floatingPassword">Password</label>
+                    <input name="password" type="password" class="form-control" id="password"
+                        placeholder="Password">
+                    <label for="password">Password</label>
                 </div>
                 <button onclick="login()" class="button-submit btn btn-primary">Login</button>
                 <p>No account? <a href="/register">Register here</a></p>
             </div>
         </div>
-        <%- include('../footer.ejs') %>
+        <%- include('partials/footer.ejs') %>
 </body>
 
 </html>

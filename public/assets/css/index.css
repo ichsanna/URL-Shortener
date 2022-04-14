@@ -17,6 +17,13 @@
 .toolbar{
     margin-bottom: 20px;
 }
+.toolbar-child p{
+    margin-right: 10px;
+    margin-bottom: 0px;
+}
+.toolbar-child select{
+    margin-right: 10px;
+}
 .links-container{
     border-radius: 10px;
     background-color: white;
@@ -29,6 +36,13 @@
 .operation button{
     margin-right:10px;
 }
-.button-copy i{
+.operation button i{
     margin-right:10px;
+}
+#qr-image{
+    margin-top:20px !important;
+    width: 400px;
+    height: 400px;
+    display: block;
+    margin: 0 auto;
 }

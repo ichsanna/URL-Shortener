@@ -1,12 +1,13 @@
 const express = require('express')
-const auth = require('../middlewares/auth')
 const router = express.Router()
+const auth = require('../middlewares/auth')
+const linkController = require('../controllers/linkController')
 
 router.get('/', async (req, res) => {
     let token = req.cookies.token
     let isAuthorized = await auth.verifyTokenWeb(token)
     if (isAuthorized) {
-        res.render("index")
+        res.render("index", { isAuthorized: isAuthorized })
     }
     else res.redirect("/login")
 })
@@ -16,7 +17,7 @@ router.get('/login', async (req, res) => {
     if (isAuthorized) {
         res.redirect("/")
     }
-    else res.render("login")
+    else res.render("login", { isAuthorized: isAuthorized })
 
 })
 router.get('/register', async (req, res) => {
@@ -25,7 +26,7 @@ router.get('/register', async (req, res) => {
     if (isAuthorized) {
         res.redirect("/")
     }
-    else res.render("register")
+    else res.render("register", { isAuthorized: isAuthorized })
 })
-
+router.get('/:shortLink', linkController.redirectToLink)
 module.exports = router;

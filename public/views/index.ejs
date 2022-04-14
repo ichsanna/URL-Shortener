@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('partials/head.ejs') %>
+        <link rel="stylesheet" href="/css/index.css">
+</head>
+
+<body>
+    <%- include('partials/navbar.ejs') %>
+        <div class="container main-container">
+            <div class="toolbar d-flex justify-content-between">
+                <h2>My Links</h2>
+                <div class="toolbar-child d-flex align-items-center">
+                    <div class="create d-flex align-items-center">
+                        <button type="button" class="button-create btn btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#add-modal"><i class="fa-solid fa-plus"></i>New
+                            Shortlink</button>
+                    </div>
+                    <p>Sort</p>
+                    <select class="sort-by form-select" aria-label="Sort">
+                        <option selected value="name">Link name</option>
+                        <option value="short">Short link</option>
+                        <option value="long">Long link</option>
+                        <option value="date">Date created</option>
+                    </select>
+                    <select class="sort-order form-select" aria-label="Order">
+                        <option selected value="asc">Ascending</option>
+                        <option value="desc">Descending</option>
+                    </select>
+                    <div class="search-bar input-group d-flex align-items-center">
+                        <span class="input-group-text fa-solid fa-magnifying-glass"></span>
+                        <input type="text" class="search-input form-control" placeholder="Search...">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <%- include('partials/modals/add.ejs') %>
+            <%- include('partials/modals/edit.ejs') %>
+                <%- include('partials/modals/show-qr.ejs') %>
+                    <%- include('partials/footer.ejs') %>
+</body>
+
+</html>
