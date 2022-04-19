@@ -2,7 +2,17 @@
     <div class="container-fluid d-flex justify-content-between align-items-center">
         <h2>URL Shortener</h2>
         <% if (isAuthorized) {%>
-            <button type="button" onclick="logout()" class="button-logout btn btn-primary"><i class="fa-solid fa-arrow-right-from-bracket"></i>Log out</button>
-        <% } %>
+            <div class="btn-group">
+                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <%= username %>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#" onclick="logout()">Log out</a></li>
+                </ul>
+            </div>
+            
+            <% } %>
+                
     </div>
 </nav>
