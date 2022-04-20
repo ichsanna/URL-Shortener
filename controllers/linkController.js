@@ -14,14 +14,20 @@ const linkMethods = {
         try {
             let data = async () => {
                 let { userId, nameLink, longLink } = req.body
+                console.log(req.body)
                 if (!userId || !nameLink || !longLink || !validator.isMongoId(userId) || !validator.isURL(longLink)) {
                     return { status: 422, data: resFormat(false, msg.failedCreateLink, null) }
                 }
                 userId = mongoose.Types.ObjectId(userId);
-                let shortLink = randomString.generate({
-                    length: 8,
-                    charset: 'alphanumeric'
-                })
+                let shortLink
+                while (true){
+                    shortLink = randomString.generate({
+                        length: 8,
+                        charset: 'alphanumeric'
+                    })
+                    let links = await Link.findOne({shortLink: shortLink})
+                    if (!links) break
+                }
                 let user = await User.findById(userId)
                 if (!user) {
                     return { status: 404, data: resFormat(false, msg.noUserFoundById, null) }
