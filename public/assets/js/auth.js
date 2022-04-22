@@ -31,7 +31,7 @@ const login = async () => {
 const register = async () => {
     let username = $('#username').val()
     let password = $('#password').val()
-    let password2 = $('$password-repeat').val()
+    let password2 = $('#password-repeat').val()
     if (passwordCheck(password, password2)) {
         let body = {
             'username': username,
