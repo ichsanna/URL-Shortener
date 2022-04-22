@@ -67,9 +67,27 @@ const addNewLink = async () => {
         'body': JSON.stringify(body)
     }
     let responseData = await httpRequest('/api/link/add', sendData)
-    links.push(responseData.data)
-    $("#add-modal").modal('hide')
-    renderLinks(links)
+    if (responseData.success) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Yay',
+            timer: 2000,
+            timerProgressBar: true,
+            text: responseData.message
+        })
+        links.push(responseData.data)
+        $("#add-modal").modal('hide')
+        renderLinks(links)
+    }
+    else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            timer: 2000,
+            timerProgressBar: true,
+            text: responseData.message
+        })
+    }
 }
 const openQR = (shortLink, count) => {
     let nameLink = $(`.links-container:nth-child(${2 + count})`).find(".link-title").text()
@@ -105,12 +123,30 @@ const editLink = async (linkId) => {
         'body': JSON.stringify(body)
     }
     let responseData = await httpRequest('/api/link/edit', sendData)
-    let index = links.findIndex(arr => arr._id === linkId)
-    links[index].longLink = longLink
-    links[index].nameLink = nameLink
-    $("#edit-modal").modal('hide')
-    $('.submit-edit').attr("onclick", "")
-    renderLinks(links)
+    if (responseData.success) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Yay',
+            timer: 2000,
+            timerProgressBar: true,
+            text: responseData.message
+        })
+        let index = links.findIndex(arr => arr._id === linkId)
+        links[index].longLink = longLink
+        links[index].nameLink = nameLink
+        $("#edit-modal").modal('hide')
+        $('.submit-edit').attr("onclick", "")
+        renderLinks(links)
+    }
+    else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops',
+            timer: 2000,
+            timerProgressBar: true,
+            text: responseData.message
+        })
+    }
 }
 const deleteLink = async (linkId) => {
     let body = {
@@ -125,16 +161,33 @@ const deleteLink = async (linkId) => {
         'body': JSON.stringify(body)
     }
     let responseData = await httpRequest('/api/link/delete', sendData)
-    let index = links.findIndex(arr => arr._id === linkId)
-    links.splice(index, 1)
-    renderLinks(links)
+    if (responseData.success) {
+        Swal.fire({
+            icon: 'success',
+            title: 'Yay',
+            timer: 2000,
+            timerProgressBar: true,
+            text: responseData.message
+        })
+        let index = links.findIndex(arr => arr._id === linkId)
+        links.splice(index, 1)
+        renderLinks(links)
+    }
+    else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops',
+            timer: 2000,
+            timerProgressBar: true,
+            text: responseData.message
+        })
+    }
 }
 const filterLinks = () => {
     let search = $('.search-input').val()
     let sortBy = $('.sort-by').val()
     let sortOrder = $('.sort-order').val()
     tmpLinks = links
-    //search dulu baru ini rendernya links, bukan tmpLinks
     if (sortBy === 'name') {
         tmpLinks.sort((a, b) => {
             if (a.nameLink.toLowerCase() > b.nameLink.toLowerCase()) {

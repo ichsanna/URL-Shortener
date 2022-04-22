@@ -13,9 +13,20 @@ const login = async () => {
         'body': JSON.stringify(body)
     }
     let responseData = await httpRequest('/api/user/login', sendData)
-    Cookies.set("token", responseData.data.token)
-    Cookies.set("user_id", responseData.data.userId)
-    window.location = "/"
+    if (responseData.success) {
+        Cookies.set("token", responseData.data.token)
+        Cookies.set("user_id", responseData.data.userId)
+        window.location = "/"
+    }
+    else {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            timer: 2000,
+            timerProgressBar: true,
+            text: responseData.message
+        })
+    }
 }
 const register = async () => {
     let username = $('#username').val()
@@ -34,9 +45,20 @@ const register = async () => {
             'body': JSON.stringify(body)
         }
         let responseData = await httpRequest('/api/user/register', sendData)
-        Cookies.set("token", responseData.data.token)
-        Cookies.set("user_id", responseData.data.userId)
-        window.location = "/"
+        if (responseData.success) {
+            Cookies.set("token", responseData.data.token)
+            Cookies.set("user_id", responseData.data.userId)
+            window.location = "/"
+        }
+        else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                timer: 2000,
+                timerProgressBar: true,
+                text: responseData.message
+            })
+        }
     }
     else {
         $('#password-repeat').addClass("is-invalid")
