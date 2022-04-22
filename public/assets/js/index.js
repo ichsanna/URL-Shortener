@@ -47,7 +47,9 @@ const getLinks = async () => {
     }
     let responseData = await httpRequest('/api/link/get/user/' + Cookies.get("user_id"), sendData)
     links = responseData.data
-    renderLinks(links, 'sad')
+    if (links){
+        renderLinks(links)
+    }
 }
 const addNewLink = async () => {
     let longLink = $('#add-long').val()
