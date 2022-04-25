@@ -46,7 +46,7 @@ const getLinks = async () => {
         },
     }
     let responseData = await httpRequest('/api/link/get/user/' + Cookies.get("user_id"), sendData)
-    if (responseData.success){
+    if (responseData.success) {
         links = responseData.data
         renderLinks(links)
     }
@@ -70,15 +70,16 @@ const addNewLink = async () => {
     }
     let responseData = await httpRequest('/api/link/add', sendData)
     if (responseData.success) {
-        Swal.fire({
-            icon: 'success',
-            title: 'Yay',
-            timer: 2000,
-            timerProgressBar: true,
-            text: responseData.message
-        })
         links.push(responseData.data)
         $("#add-modal").modal('hide')
+        $("#show-new-modal").modal('show')
+        $('.new-link').append(`<div class="link">
+            <h3 class="link-title">${responseData.data.nameLink}</h3>
+            <a href="${responseData.data.shortLink}" target="_blank" class="link-short">localhost:3000/${responseData.data.shortLink}</a>
+            <p class="link-original">${responseData.data.longLink}</p>
+            <p class="created-at">Created at: ${((new Date(responseData.data.created_at)).toString()).substring(4, 21)}</p>
+        </div>`)
+        $('.new-copy').attr("onclick", `copyLink("localhost:3000/${responseData.data.shortLink}")`)
         renderLinks(links)
     }
     else {
