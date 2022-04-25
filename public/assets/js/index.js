@@ -80,7 +80,7 @@ const addNewLink = async () => {
             <p class="created-at">Created at: ${((new Date(responseData.data.created_at)).toString()).substring(4, 21)}</p>
         </div>`)
         $('.new-copy').attr("onclick", `copyLink("${this.location.host}/${responseData.data.shortLink}")`)
-        renderLinks(links)
+        filterLinks()
     }
     else {
         Swal.fire({
