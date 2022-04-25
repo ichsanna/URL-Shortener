@@ -73,6 +73,7 @@ const addNewLink = async () => {
         links.push(responseData.data)
         $("#add-modal").modal('hide')
         $("#show-new-modal").modal('show')
+        $('.new-link').empty()
         $('.new-link').append(`<div class="link">
             <h3 class="link-title">${responseData.data.nameLink}</h3>
             <a href="${responseData.data.shortLink}" target="_blank" class="link-short">${this.location.host}/${responseData.data.shortLink}</a>
