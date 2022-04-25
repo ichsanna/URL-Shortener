@@ -48,7 +48,7 @@ const getLinks = async () => {
     let responseData = await httpRequest('/api/link/get/user/' + Cookies.get("user_id"), sendData)
     if (responseData.success) {
         links = responseData.data
-        renderLinks(links)
+        filterLinks()
     }
 }
 const addNewLink = async () => {
