@@ -16,7 +16,7 @@ const renderLinks = async (items) => {
         $('.main-container').append(`<div class="container links-container d-flex justify-content-between">
         <div class="link">
             <h3 class="link-title">${item.nameLink}</h3>
-            <a href="${item.shortLink}" target="_blank" class="link-short">localhost:3000/${item.shortLink}</a>
+            <a href="${item.shortLink}" target="_blank" class="link-short">${this.location.host}/${item.shortLink}</a>
             <p class="link-original">${item.longLink}</p>
             <p class="created-at">Created at: ${created_at}</p>
         </div>
@@ -27,7 +27,7 @@ const renderLinks = async (items) => {
                     <i class="fa-solid fa-qrcode"></i>QR Code</button>
             </div>
             <div class="d-flex">
-            <button type="button" onclick="copyLink('localhost:3000/${item.shortLink}')"class="button-copy btn btn-primary">
+            <button type="button" onclick="copyLink('${this.location.host}/${item.shortLink}')"class="button-copy btn btn-primary">
                    <i class="fa-solid fa-copy"></i>Copy</button>
             <button type="button" onclick="getEditLink('${item._id}',${count})" class="button-edit btn btn-primary" data-bs-toggle="modal"
                     data-bs-target="#edit-modal"><i class="fa-solid fa-pen-to-square"></i>Edit</button>
@@ -75,11 +75,11 @@ const addNewLink = async () => {
         $("#show-new-modal").modal('show')
         $('.new-link').append(`<div class="link">
             <h3 class="link-title">${responseData.data.nameLink}</h3>
-            <a href="${responseData.data.shortLink}" target="_blank" class="link-short">localhost:3000/${responseData.data.shortLink}</a>
+            <a href="${responseData.data.shortLink}" target="_blank" class="link-short">${this.location.host}/${responseData.data.shortLink}</a>
             <p class="link-original">${responseData.data.longLink}</p>
             <p class="created-at">Created at: ${((new Date(responseData.data.created_at)).toString()).substring(4, 21)}</p>
         </div>`)
-        $('.new-copy').attr("onclick", `copyLink("localhost:3000/${responseData.data.shortLink}")`)
+        $('.new-copy').attr("onclick", `copyLink("${this.location.host}/${responseData.data.shortLink}")`)
         renderLinks(links)
     }
     else {
