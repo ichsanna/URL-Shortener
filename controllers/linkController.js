@@ -14,7 +14,6 @@ const linkMethods = {
         try {
             let data = async () => {
                 let { userId, nameLink, longLink } = req.body
-                console.log(req.body)
                 if (!userId || !nameLink || !longLink || !validator.isMongoId(userId) || !validator.isURL(longLink)) {
                     return { status: 422, data: resFormat(false, msg.failedCreateLink, null) }
                 }
