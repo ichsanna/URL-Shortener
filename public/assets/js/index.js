@@ -84,13 +84,7 @@ const addNewLink = async () => {
         filterLinks()
     }
     else {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            timer: 2000,
-            timerProgressBar: true,
-            text: responseData.message
-        })
+        alert('error',responseData.message)
     }
 }
 const openQR = (shortLink, count) => {
@@ -137,13 +131,7 @@ const editLink = async (linkId) => {
         renderLinks(links)
     }
     else {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops',
-            timer: 2000,
-            timerProgressBar: true,
-            text: responseData.message
-        })
+        alert('error',responseData.message)
     }
 }
 const deleteLink = async (linkId) => {
@@ -166,13 +154,7 @@ const deleteLink = async (linkId) => {
         renderLinks(links)
     }
     else {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops',
-            timer: 2000,
-            timerProgressBar: true,
-            text: responseData.message
-        })
+        alert('error',responseData.message)
     }
 }
 const filterLinks = () => {
