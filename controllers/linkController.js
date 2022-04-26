@@ -19,12 +19,12 @@ const linkMethods = {
                 }
                 userId = mongoose.Types.ObjectId(userId);
                 let shortLink
-                while (true){
+                while (true) {
                     shortLink = randomString.generate({
                         length: 8,
                         charset: 'alphanumeric'
                     })
-                    let links = await Link.findOne({shortLink: shortLink})
+                    let links = await Link.findOne({ shortLink: shortLink })
                     if (!links) break
                 }
                 let user = await User.findById(userId)
@@ -142,7 +142,12 @@ const linkMethods = {
                 return links.longLink
             }
             let resp = await data()
-            res.redirect(resp)
+            if (validator.isURL((new URL(`https://${resp}`).href))) {
+                res.redirect(`https://${resp}`)
+            }
+            else {
+                res.redirect(resp)
+            }
         }
         catch (err) {
             res.status(400).json(resFormat(false, null, err))
