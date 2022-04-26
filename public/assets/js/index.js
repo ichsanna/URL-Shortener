@@ -128,13 +128,7 @@ const editLink = async (linkId) => {
     }
     let responseData = await httpRequest('/api/link/edit', sendData)
     if (responseData.success) {
-        Swal.fire({
-            icon: 'success',
-            title: 'Yay',
-            timer: 2000,
-            timerProgressBar: true,
-            text: responseData.message
-        })
+        alert('success',responseData.message)
         let index = links.findIndex(arr => arr._id === linkId)
         links[index].longLink = longLink
         links[index].nameLink = nameLink
@@ -166,13 +160,7 @@ const deleteLink = async (linkId) => {
     }
     let responseData = await httpRequest('/api/link/delete', sendData)
     if (responseData.success) {
-        Swal.fire({
-            icon: 'success',
-            title: 'Yay',
-            timer: 2000,
-            timerProgressBar: true,
-            text: responseData.message
-        })
+        alert('success',responseData.message)
         let index = links.findIndex(arr => arr._id === linkId)
         links.splice(index, 1)
         renderLinks(links)
