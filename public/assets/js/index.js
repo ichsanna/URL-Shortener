@@ -31,7 +31,7 @@ const renderLinks = async (items) => {
                    <i class="fa-solid fa-copy"></i>Copy</button>
             <button type="button" onclick="getEditLink('${item._id}',${count})" class="button-edit btn btn-primary" data-bs-toggle="modal"
                     data-bs-target="#edit-modal"><i class="fa-solid fa-pen-to-square"></i>Edit</button>
-            <button type="button" onclick="deleteLink('${item._id}')" class="button-delete btn btn-primary">
+            <button type="button" onclick="deleteLinkConfirmation('${item._id}')" class="button-delete btn btn-primary">
                     <i class="fa-solid fa-x"></i>Delete</button>
             </div>
         </div>
@@ -133,6 +133,21 @@ const editLink = async (linkId) => {
     else {
         alert('error',responseData.message)
     }
+}
+const deleteLinkConfirmation = async (linkId) =>{
+    let index = links.findIndex(arr => arr._id === linkId)
+    Swal.fire({
+        title: 'Are you sure you want to delete?',
+        text: links[index].nameLink,
+        showConfirmButton: false,
+        showDenyButton: true,
+        showCancelButton: true,
+        denyButtonText: 'Delete',
+      }).then((result) => {
+        if (result.isDenied) {
+          deleteLink(linkId)
+        }
+      })
 }
 const deleteLink = async (linkId) => {
     let body = {
