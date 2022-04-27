@@ -54,7 +54,7 @@ const linkMethods = {
                 if (!linkId || !nameLink || !longLink || !validator.isMongoId(linkId) || !validator.isURL(longLink)) {
                     return { status: 422, data: resFormat(false, msg.failedEditLink, null) }
                 }
-                let editedLink = await Link.findOneAndUpdate({ _id: linkId }, { $set: { nameLink: nameLink, longLink: longLink } })
+                let editedLink = await Link.findOneAndUpdate({ _id: linkId }, { $set: { nameLink: nameLink, longLink: longLink, modified_at: Date.now()} })
                 if (!editedLink) {
                     return { status: 404, data: resFormat(true, msg.noLinkFoundByLinkId, null) }
                 }

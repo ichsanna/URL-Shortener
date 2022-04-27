@@ -13,12 +13,14 @@ const renderLinks = async (items) => {
     $(".links-container").remove()
     items.forEach((item, count) => {
         created_at = ((new Date(item.created_at)).toString()).substring(4, 21)
+        modified_at = ((new Date(item.modified_at)).toString()).substring(4, 21)
         $('.main-container').append(`<div class="container links-container d-flex justify-content-between">
         <div class="link">
             <h3 class="link-title">${item.nameLink}</h3>
             <a href="${item.shortLink}" target="_blank" class="link-short">${this.location.host}/${item.shortLink}</a>
             <p class="link-original">${item.longLink}</p>
             <p class="created-at">Created at: ${created_at}</p>
+            <p class="modified-at">Last Modified: ${modified_at}</p>
         </div>
         <div class="operation d-flex flex-column align-items-center justify-content-around">
             <div class="d-flex justify-content-center">
@@ -126,6 +128,7 @@ const editLink = async (linkId) => {
         let index = links.findIndex(arr => arr._id === linkId)
         links[index].longLink = longLink
         links[index].nameLink = nameLink
+        links[index].modified_at = responseData.data.modified_at
         $("#edit-modal").modal('hide')
         $('.submit-edit').attr("onclick", "")
         renderLinks(links)

@@ -4,7 +4,8 @@ const linkSchema = mongoose.Schema({
     nameLink: String,
     longLink: String,
     shortLink: String,
-    created_at: {type: Date, default: Date.now}
+    created_at: {type: Date, default: Date.now},
+    modified_at: {type: Date, default: Date.now}
 });
 
 module.exports = mongoose.model('link', linkSchema);
