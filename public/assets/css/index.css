@@ -49,3 +49,6 @@
     display: block;
     margin: 0 auto;
 }
+.created-at, .modified-at{
+    margin-bottom: 0px !important;
+}
