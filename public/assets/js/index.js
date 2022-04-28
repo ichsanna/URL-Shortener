@@ -196,9 +196,17 @@ const filterLinks = () => {
             return -1
         })
     }
-    else if (sortBy === 'date') {
+    else if (sortBy === 'date_created') {
         tmpLinks.sort((a, b) => {
             if (a.created_at.toLowerCase() > b.created_at.toLowerCase()) {
+                return 1
+            }
+            return -1
+        })
+    }
+    else if (sortBy === 'date_modified') {
+        tmpLinks.sort((a, b) => {
+            if (a.modified_at.toLowerCase() > b.modified_at.toLowerCase()) {
                 return 1
             }
             return -1
