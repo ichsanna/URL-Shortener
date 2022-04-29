@@ -135,7 +135,7 @@ const linkMethods = {
                 if (!shortLink) {
                     return '/'
                 }
-                let links = await Link.findOne({ shortLink: shortLink }).select('longLink')
+                let links = await Link.findOneAndUpdate({ shortLink: shortLink },{ $inc: {visits: 1}}).select('longLink')
                 if (!links) {
                     return '/'
                 }

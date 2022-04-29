@@ -19,6 +19,7 @@ const renderLinks = async (items) => {
             <h3 class="link-title">${item.nameLink}</h3>
             <a href="${item.shortLink}" target="_blank" class="link-short">${this.location.host}/${item.shortLink}</a>
             <p class="link-original">${item.longLink}</p>
+            <p class="visits">Link visits: ${item.visits}</p>
             <p class="created-at">Created at: ${created_at}</p>
             <p class="modified-at">Last Modified: ${modified_at}</p>
         </div>
