@@ -23,7 +23,7 @@ const renderLinks = async (items) => {
             <p class="created-at">Created at: ${created_at}</p>
             <p class="modified-at">Last Modified: ${modified_at}</p>
         </div>
-        <div class="operation d-flex flex-column align-items-center justify-content-around">
+        <div class="operation d-flex flex-column align-items-center justify-content-evenly">
             <div class="d-flex justify-content-center">
                 <button type="button" onclick="openQR('${item.shortLink}',${count})"class="button-qr btn btn-primary" 
                 data-bs-toggle="modal" data-bs-target="#qr-modal">
