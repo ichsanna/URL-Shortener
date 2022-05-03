@@ -16,6 +16,7 @@ const msg = require('./configs/responseMessages')
 
 const port = process.env.PORT || 3000
 const app = express()
+app.disable('x-powered-by')
 
 app.set('view engine','ejs')
 
