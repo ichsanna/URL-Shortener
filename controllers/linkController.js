@@ -14,18 +14,17 @@ const linkMethods = {
         try {
             let data = async () => {
                 let { userId, nameLink, longLink } = req.body
-                console.log(req.body)
                 if (!userId || !nameLink || !longLink || !validator.isMongoId(userId) || !validator.isURL(longLink)) {
                     return { status: 422, data: resFormat(false, msg.failedCreateLink, null) }
                 }
                 userId = mongoose.Types.ObjectId(userId);
                 let shortLink
-                while (true){
+                while (true) {
                     shortLink = randomString.generate({
                         length: 8,
                         charset: 'alphanumeric'
                     })
-                    let links = await Link.findOne({shortLink: shortLink})
+                    let links = await Link.findOne({ shortLink: shortLink })
                     if (!links) break
                 }
                 let user = await User.findById(userId)
@@ -55,7 +54,7 @@ const linkMethods = {
                 if (!linkId || !nameLink || !longLink || !validator.isMongoId(linkId) || !validator.isURL(longLink)) {
                     return { status: 422, data: resFormat(false, msg.failedEditLink, null) }
                 }
-                let editedLink = await Link.findOneAndUpdate({ _id: linkId }, { $set: { nameLink: nameLink, longLink: longLink } })
+                let editedLink = await Link.findOneAndUpdate({ _id: linkId }, { $set: { nameLink: nameLink, longLink: longLink, modified_at: Date.now()} })
                 if (!editedLink) {
                     return { status: 404, data: resFormat(true, msg.noLinkFoundByLinkId, null) }
                 }
@@ -136,14 +135,19 @@ const linkMethods = {
                 if (!shortLink) {
                     return '/'
                 }
-                let links = await Link.findOne({ shortLink: shortLink }).select('longLink')
+                let links = await Link.findOneAndUpdate({ shortLink: shortLink },{ $inc: {visits: 1}}).select('longLink')
                 if (!links) {
                     return '/'
                 }
                 return links.longLink
             }
             let resp = await data()
-            res.redirect(resp)
+            if (validator.isURL((new URL(`https://${resp}`).href))) {
+                res.redirect(`https://${resp}`)
+            }
+            else {
+                res.redirect(resp)
+            }
         }
         catch (err) {
             res.status(400).json(resFormat(false, null, err))

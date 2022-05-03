@@ -4,6 +4,7 @@
 <head>
     <%- include('partials/head.ejs') %>
         <link rel="stylesheet" href="/css/index.css">
+        <script src="js/index.js"></script>
 </head>
 
 <body>
@@ -19,14 +20,15 @@
                     </div>
                     <p>Sort</p>
                     <select class="sort-by form-select" aria-label="Sort">
-                        <option selected value="name">Link name</option>
+                        <option value="name">Link name</option>
                         <option value="short">Short link</option>
                         <option value="long">Long link</option>
-                        <option value="date">Date created</option>
+                        <option selected value="date_created">Date created</option>
+                        <option value="date_modified">Date modified</option>
                     </select>
                     <select class="sort-order form-select" aria-label="Order">
-                        <option selected value="asc">Ascending</option>
-                        <option value="desc">Descending</option>
+                        <option value="asc">Ascending</option>
+                        <option selected value="desc">Descending</option>
                     </select>
                     <div class="search-bar input-group d-flex align-items-center">
                         <span class="input-group-text fa-solid fa-magnifying-glass"></span>
@@ -37,8 +39,9 @@
         </div>
         <%- include('partials/modals/add.ejs') %>
             <%- include('partials/modals/edit.ejs') %>
-                <%- include('partials/modals/show-qr.ejs') %>
-                    <%- include('partials/footer.ejs') %>
+                <%- include('partials/modals/show-new.ejs') %>
+                    <%- include('partials/modals/show-qr.ejs') %>
+                        <%- include('partials/footer.ejs') %>
 </body>
 
 </html>

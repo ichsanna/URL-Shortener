@@ -13,25 +13,28 @@ const renderLinks = async (items) => {
     $(".links-container").remove()
     items.forEach((item, count) => {
         created_at = ((new Date(item.created_at)).toString()).substring(4, 21)
+        modified_at = ((new Date(item.modified_at)).toString()).substring(4, 21)
         $('.main-container').append(`<div class="container links-container d-flex justify-content-between">
         <div class="link">
             <h3 class="link-title">${item.nameLink}</h3>
-            <a href="${item.shortLink}" target="_blank" class="link-short">localhost:3000/${item.shortLink}</a>
+            <a href="${item.shortLink}" target="_blank" class="link-short">${this.location.host}/${item.shortLink}</a>
             <p class="link-original">${item.longLink}</p>
+            <p class="visits">Link visits: ${item.visits}</p>
             <p class="created-at">Created at: ${created_at}</p>
+            <p class="modified-at">Last Modified: ${modified_at}</p>
         </div>
-        <div class="operation d-flex flex-column align-items-center justify-content-around">
+        <div class="operation d-flex flex-column align-items-center justify-content-evenly">
             <div class="d-flex justify-content-center">
                 <button type="button" onclick="openQR('${item.shortLink}',${count})"class="button-qr btn btn-primary" 
                 data-bs-toggle="modal" data-bs-target="#qr-modal">
                     <i class="fa-solid fa-qrcode"></i>QR Code</button>
             </div>
             <div class="d-flex">
-            <button type="button" onclick="copyLink('localhost:3000/${item.shortLink}')"class="button-copy btn btn-primary">
+            <button type="button" onclick="copyLink('${this.location.host}/${item.shortLink}')"class="button-copy btn btn-primary">
                    <i class="fa-solid fa-copy"></i>Copy</button>
             <button type="button" onclick="getEditLink('${item._id}',${count})" class="button-edit btn btn-primary" data-bs-toggle="modal"
                     data-bs-target="#edit-modal"><i class="fa-solid fa-pen-to-square"></i>Edit</button>
-            <button type="button" onclick="deleteLink('${item._id}')" class="button-delete btn btn-primary">
+            <button type="button" onclick="deleteLinkConfirmation('${item._id}')" class="button-delete btn btn-primary">
                     <i class="fa-solid fa-x"></i>Delete</button>
             </div>
         </div>
@@ -46,9 +49,9 @@ const getLinks = async () => {
         },
     }
     let responseData = await httpRequest('/api/link/get/user/' + Cookies.get("user_id"), sendData)
-    if (responseData.success){
+    if (responseData.success) {
         links = responseData.data
-        renderLinks(links)
+        filterLinks()
     }
 }
 const addNewLink = async () => {
@@ -70,25 +73,21 @@ const addNewLink = async () => {
     }
     let responseData = await httpRequest('/api/link/add', sendData)
     if (responseData.success) {
-        Swal.fire({
-            icon: 'success',
-            title: 'Yay',
-            timer: 2000,
-            timerProgressBar: true,
-            text: responseData.message
-        })
         links.push(responseData.data)
         $("#add-modal").modal('hide')
-        renderLinks(links)
+        $("#show-new-modal").modal('show')
+        $('.new-link').empty()
+        $('.new-link').append(`<div class="link">
+            <h3 class="link-title">${responseData.data.nameLink}</h3>
+            <a href="${responseData.data.shortLink}" target="_blank" class="link-short">${this.location.host}/${responseData.data.shortLink}</a>
+            <p class="link-original">${responseData.data.longLink}</p>
+            <p class="created-at">Created at: ${((new Date(responseData.data.created_at)).toString()).substring(4, 21)}</p>
+        </div>`)
+        $('.new-copy').attr("onclick", `copyLink("${this.location.host}/${responseData.data.shortLink}")`)
+        filterLinks()
     }
     else {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            timer: 2000,
-            timerProgressBar: true,
-            text: responseData.message
-        })
+        alert('error',responseData.message)
     }
 }
 const openQR = (shortLink, count) => {
@@ -126,29 +125,33 @@ const editLink = async (linkId) => {
     }
     let responseData = await httpRequest('/api/link/edit', sendData)
     if (responseData.success) {
-        Swal.fire({
-            icon: 'success',
-            title: 'Yay',
-            timer: 2000,
-            timerProgressBar: true,
-            text: responseData.message
-        })
+        alert('success',responseData.message)
         let index = links.findIndex(arr => arr._id === linkId)
         links[index].longLink = longLink
         links[index].nameLink = nameLink
+        links[index].modified_at = responseData.data.modified_at
         $("#edit-modal").modal('hide')
         $('.submit-edit').attr("onclick", "")
         renderLinks(links)
     }
     else {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops',
-            timer: 2000,
-            timerProgressBar: true,
-            text: responseData.message
-        })
+        alert('error',responseData.message)
     }
+}
+const deleteLinkConfirmation = async (linkId) =>{
+    let index = links.findIndex(arr => arr._id === linkId)
+    Swal.fire({
+        title: 'Are you sure you want to delete?',
+        text: links[index].nameLink,
+        showConfirmButton: false,
+        showDenyButton: true,
+        showCancelButton: true,
+        denyButtonText: 'Delete',
+      }).then((result) => {
+        if (result.isDenied) {
+          deleteLink(linkId)
+        }
+      })
 }
 const deleteLink = async (linkId) => {
     let body = {
@@ -164,25 +167,13 @@ const deleteLink = async (linkId) => {
     }
     let responseData = await httpRequest('/api/link/delete', sendData)
     if (responseData.success) {
-        Swal.fire({
-            icon: 'success',
-            title: 'Yay',
-            timer: 2000,
-            timerProgressBar: true,
-            text: responseData.message
-        })
+        alert('success',responseData.message)
         let index = links.findIndex(arr => arr._id === linkId)
         links.splice(index, 1)
         renderLinks(links)
     }
     else {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops',
-            timer: 2000,
-            timerProgressBar: true,
-            text: responseData.message
-        })
+        alert('error',responseData.message)
     }
 }
 const filterLinks = () => {
@@ -206,9 +197,17 @@ const filterLinks = () => {
             return -1
         })
     }
-    else if (sortBy === 'date') {
+    else if (sortBy === 'date_created') {
         tmpLinks.sort((a, b) => {
             if (a.created_at.toLowerCase() > b.created_at.toLowerCase()) {
+                return 1
+            }
+            return -1
+        })
+    }
+    else if (sortBy === 'date_modified') {
+        tmpLinks.sort((a, b) => {
+            if (a.modified_at.toLowerCase() > b.modified_at.toLowerCase()) {
                 return 1
             }
             return -1

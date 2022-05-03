@@ -19,13 +19,7 @@ const login = async () => {
         window.location = "/"
     }
     else {
-        Swal.fire({
-            icon: 'error',
-            title: 'Oops...',
-            timer: 2000,
-            timerProgressBar: true,
-            text: responseData.message
-        })
+        alert('error',responseData.message)
     }
 }
 const register = async () => {
@@ -51,13 +45,7 @@ const register = async () => {
             window.location = "/"
         }
         else {
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                timer: 2000,
-                timerProgressBar: true,
-                text: responseData.message
-            })
+            alert('error',responseData.message)
         }
     }
     else {

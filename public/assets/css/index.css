@@ -39,10 +39,16 @@
 .operation button i{
     margin-right:10px;
 }
+.new-copy i{
+    margin-right: 10px;
+}
 #qr-image{
     margin-top:20px !important;
     width: 400px;
     height: 400px;
     display: block;
     margin: 0 auto;
+}
+.visits, .created-at, .modified-at{
+    margin-bottom: 0px !important;
 }
