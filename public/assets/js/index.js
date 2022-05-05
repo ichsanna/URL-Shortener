@@ -1,4 +1,4 @@
-var links = [{}]
+var links = []
 const logout = () => {
     Cookies.set("token", "")
     Cookies.set("user_id", "")
