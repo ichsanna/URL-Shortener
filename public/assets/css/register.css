@@ -1,4 +1,4 @@
-.register-form{
+.form-register{
     margin-top:50px;
     background-color: white;
     width: 800px;
@@ -17,6 +17,6 @@
     margin-top:20px;
     width:100px;
 }
-.register-form p{
+.form-register p{
     margin-top:10px;
 }

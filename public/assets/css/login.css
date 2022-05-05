@@ -1,4 +1,4 @@
-.login-form{
+.form-login{
     margin-top:50px;
     background-color: white;
     width: 800px;
@@ -17,6 +17,6 @@
     margin-top:20px;
     width:100px;
 }
-.login-form p{
+.form-login p{
     margin-top:10px;
 }

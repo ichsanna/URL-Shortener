@@ -5,22 +5,24 @@
                 <h4 class="modal-title">Add New Shortlink</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <div class="form-input form-floating mb-3">
-                    <input name="namelink" type="text" class="form-control" id="add-name"
-                        placeholder="Enter link name">
-                    <label for="add-name">Link name</label>
+            <form class="form-add" onsubmit="event.preventDefault();addNewLink()">
+                <div class="modal-body">
+                    <div class="form-input form-floating mb-3">
+                        <input name="namelink" type="text" class="form-control" id="add-name"
+                            placeholder="Enter link name">
+                        <label for="add-name">Link name</label>
+                    </div>
+                    <div class="form-input form-floating mb-3">
+                        <input name="longlink" type="text" class="form-control" id="add-long"
+                            placeholder="Enter your link">
+                        <label for="add-long">Paste your link</label>
+                    </div>
                 </div>
-                <div class="form-input form-floating mb-3">
-                    <input name="longlink" type="text" class="form-control" id="add-long"
-                        placeholder="Enter your link">
-                    <label for="add-long">Paste your link</label>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Add</button>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" onclick="addNewLink()" class="btn btn-primary">Add</button>
-            </div>
+            </form>
         </div>
     </div>
 </div>

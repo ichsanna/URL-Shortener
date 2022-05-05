@@ -105,7 +105,7 @@ const getEditLink = (linkId, count) => {
     $('#edit-name').val(nameLink)
     $('#edit-long').val(longLink)
     $('#edit-short').val(shortLink)
-    $('.submit-edit').attr("onclick", `editLink("${linkId}")`)
+    $('.form-edit').attr("onsubmit", `event.preventDefault();editLink("${linkId}")`)
 }
 const editLink = async (linkId) => {
     let nameLink = $('#edit-name').val()

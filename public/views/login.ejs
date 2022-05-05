@@ -10,7 +10,7 @@
 <body>
     <%- include('partials/navbar.ejs') %>
         <div class="container main-container d-flex flex-column justify-content-center align-items-center">
-            <div class="login-form">
+            <form class="form-login" onsubmit="event.preventDefault();login()">
                 <h1>Login</h1>
                 <div class="form-input form-floating mb-3">
                     <input name="username" type="text" class="form-control" id="username" placeholder="Username">
@@ -21,9 +21,9 @@
                         placeholder="Password">
                     <label for="password">Password</label>
                 </div>
-                <button onclick="login()" class="button-submit btn btn-primary">Login</button>
+                <button type="submit" class="button-submit btn btn-primary">Login</button>
                 <p>No account? <a href="/register">Register here</a></p>
-            </div>
+            </form>
         </div>
         <%- include('partials/footer.ejs') %>
 </body>
